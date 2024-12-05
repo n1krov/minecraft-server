@@ -12,6 +12,13 @@ Luego ejecuta
 ```bash
 docker-compose up -d
 ```
+
+Para detener el servidor ejecuta
+
+```bash
+docker-compose down
+```
+
 ### Probemos la conexion
 
 Si estas en local, abrir el launcher de preferencia y agregar un nuevo servidor con la ip `localhost` y el puerto `25565`.

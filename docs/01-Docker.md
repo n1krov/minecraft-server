@@ -88,6 +88,37 @@ Para especificar el tipo de servidor se utiliza `TYPE`
 - Si despues vere si tengo ganas de escirbir un equivalente en .bat para Windows.
 
 
+## Opcional - Conectarse de manera local
+Si quieres conectarte de manera local debes agregar en el yaml `ports: - "25565:25565"` para exponer el puerto 25565 del contenedor al puerto 25565 del host.
+
+Por lo que el archivo de configuracion yaml se veria asi:
+```yaml
+version: "3.8"
+
+services:
+  minecraft-server:
+    image: itzg/minecraft-server
+    tty: true
+    stdin_open: true
+    ports:
+      - "25565:25565"
+    environment:
+      EULA: "TRUE"
+      MEMORY: "4G"
+      TYPE: "FABRIC"
+      VERSION: "1.20.1"
+      MOTD: "Bienvenido a mi servidor de Minecraft"
+      DIFFICULTY: "hard"
+      ICON: "https://example.com/icon.png"
+      MAX_PLAYERS: "20"
+      ONLINE_MODE: "false
+    volumes:
+      - ./data:/data
+```
+
+
+
+
 ## Probamos el servidor
 
 - Ejecuta el comando `docker-compose up -d` para crear el contenedor.
