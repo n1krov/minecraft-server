@@ -15,3 +15,4 @@ Hola! Este es una documentacion tutorial para crear un servidor de Minecraft uti
 - Conocimientos basicos de Docker Compose (opcional)
 - Un Minecraft launcher :D
 
+
