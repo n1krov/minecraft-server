@@ -24,6 +24,20 @@ function ctrl_c() {
 
 trap ctrl_c INT
 
+docker_service_verif ()
+{
+    echo -e "${CYAN}\n[+]${NC} Verificando servicio de Docker..."
+    sleep 2
+
+    if ! systemctl is-active --quiet docker; then
+        echo -e "${RED}[!]${NC} Docker no está corriendo."
+        echo -e "${RED}[!]${NC} Iniciando Docker..."
+        sudo systemctl start docker.service
+    else
+        echo -e "${GREEN}[+]${NC} Docker está corriendo."
+    fi
+}
+
 
 function banner()
 {
@@ -65,6 +79,8 @@ function main()
 
 
 banner
+
+docker_service_verif
 sleep 2
 main
 
