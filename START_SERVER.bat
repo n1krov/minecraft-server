@@ -31,8 +31,11 @@ if defined docker_status (
 :main
 echo [+] Iniciando contenedores...
 echo [+] Puedes usar 'Ctrl + C' para salir en cualquier momento y detener los contenedores.
+echo [!!] Ahora asegurate de abrir el tunel -> ejecutando el 'playit.gg'
+
 timeout /T 6
-docker compose up -d && docker attach servidor-servidor-1
+
+docker compose up -d
 
 goto :eof
 
