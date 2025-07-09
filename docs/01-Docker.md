@@ -1,20 +1,31 @@
+# 🐳 Servidor de Minecraft con Docker
 
-# Docker
+Aqui dejo como levantar el servidor de minecraft con Docker.
 
-Para instalar docker en tu sistema operativo, puedes seguir la documentacion oficial de Docker: [https://docs.docker.com/get-docker/](https://docs.docker.com/get-docker/)
+---
 
-## Imagen de Minecraft
+## 1. Instalación de Docker
 
-Puedes ir a docker hub y buscar una imagen de Minecraft, por ejemplo: [itzg/minecraft-server](https://hub.docker.com/r/itzg/minecraft-server)
+Sigue la documentación oficial para instalar Docker en tu sistema operativo:
 
-> Nota: si estas interesado en minecraft bedrock, puedes buscar la imagen `itzg/minecraft-bedrock-server` o algo similar
+🔗 [Guía oficial de instalación de Docker](https://docs.docker.com/get-docker/)
 
-Esta imagen de itzg es muy popular y tiene muchas opciones de configuracion, puedes ver la documentacion para instalarla en tu servidor.
 
-## Usando docker compose
+## 2. Elige una Imagen de Minecraft
 
-1. Crea un nuevo directorio para tu servidor de minecraft-server
-2. Crea un archivo `docker-compose.yml` con el siguiente contenido:
+Ve a Docker Hub y busca una imagen de Minecraft. Recomendamos:
+
+- Java: [`itzg/minecraft-server`](https://hub.docker.com/r/itzg/minecraft-server)
+- Bedrock: [`itzg/minecraft-bedrock-server`](https://hub.docker.com/r/itzg/minecraft-bedrock-server) (si prefieres la edición Bedrock)
+
+La imagen de itzg es muy popular y configurable. Consulta su documentación para más detalles.
+
+
+
+## 3. Usando Docker Compose
+
+1. Crea un nuevo directorio para tu servidor de Minecraft.
+2. Dentro de ese directorio, crea un archivo llamado `docker-compose.yml` con el siguiente contenido de ejemplo:
 
 ```yaml
 services:
@@ -33,10 +44,18 @@ services:
       DIFFICULTY: "hard"
       # ICON: "https://example.com/icon.png"
       MAX_PLAYERS: "20"
-      ONLINE_MODE: "false"
+      ONLINE_MODE: "false" # Si no eres premium déjalo en false
     volumes:
       - ./data:/data
 ```
+
+### Explicación rápida de opciones principales:
+
+- **image**: Imagen de Docker que se usará.
+- **ports**: Expone el puerto 25565 (el de Minecraft) de tu máquina.
+- **environment**: Variables de entorno para configurar el servidor (RAM, versión, EULA, etc.)
+- **volumes**: Sincroniza la carpeta `data` para guardar el mundo y la configuración.
+
 
 >[!NOTE]
 > - `mc-server` es el nombre del servicio, puedes cambiarlo a lo que quieras.
@@ -57,31 +76,64 @@ services:
 > - `MAX_PLAYERS` es para especificar el numero maximo de jugadores en el servidor.
 > - `ONLINE_MODE` es para especificar si el servidor esta en modo online o no. (Si sos no premium dejalo en false)
 
-- Si quieres conectarte de manera local debes agregar en el yaml `ports: - "25565:25565"` para exponer el puerto 25565 del contenedor al puerto 25565 del host.
 
-> Nota: Puedes ver todas las opciones de configuracion en la documentacion de la imagen de itzg.
-> Usaremos este modelo de ejemplo en la raiz del repositorio, por lo que si quieres puedes copiarlo y pegarlo en tu directorio de minecraft-server.
+📖 Puedes ver todas las variables y opciones en la [documentación de itzg/minecraft-server](https://github.com/itzg/docker-minecraft-server).
 
-## Probamos el servidor
 
-Ejecutamos el comando `docker-compose up -d` para crear el contenedor.
+## 4. Iniciar el Servidor
 
-- El docker-compose ya crea la carpeta `data` en la raiz del proyecto, por lo que no es necesario crearla manualmente.
-- Ahi se guardara la configuracion del servidor de minecraft. Estara el archivo `server.properties` y la carpeta `world` con el mundo del servidor.
+En la terminal, ejecuta:
 
-Como estoy en Linux dejo en el repositorio un script para inicializarlo en segundo plano, para attachearlo y poder detenerlo.
-- El script para linux es `init.sh`, que puedes ejecutar con `bash init.sh`.
-- Tambien esta el script `START_SERVER.bat` para Windows.
+```sh
+docker-compose up -d
+```
 
-- Ejecuta el comando `docker-compose up -d` para crear el contenedor.
+Esto creará y levantará el servidor en segundo plano.
 
-- Puedes ver los contenedores con el comando `docker ps` o `docker container list`
-- Vas a necesitar el campo NAMES para poder attachear el contenedor.
+- Se creará automáticamente la carpeta `data` donde se guardará la configuración y el mundo.
+- Puedes ver los contenedores activos con:
+  ```sh
+  docker ps
+  ```
 
-- Para ver el servidor desde la consola ejecuta `docker attach {NAMES}`
+## 5. Administrar el Servidor
 
-Espera a que el servidor termine de cargar el mundo y puedes tirar un `help` desde la consola para ver los comandos disponibles. Si te devuelve los comandos GENIAL! Lograste levantar el servidor de Minecraft.
+- **Ver la consola del servidor:**
+  ```sh
+  docker attach minecraft-server
+  ```
+  (Reemplaza `minecraft-server` por el nombre real del contenedor si lo cambiaste.)
 
-## Explicacion del directorio `data`
+- **Salir de la consola**: Usa `Ctrl + p` y luego `Ctrl + q` para salir sin detener el servidor.
 
-La carpeta `data` es donde se guardara la configuracion del servidor de minecraft. Dentro de esta carpeta se guardara el archivo `server.properties` y la carpeta `world` con el mundo del servidor.
+- **Detener el servidor:**
+  ```sh
+  docker-compose down
+  ```
+
+
+## 6. Scripts Útiles
+
+- **Linux:** Usa el script `init.sh` para inicializar el servidor.
+  ```sh
+  bash init.sh
+  ```
+- **Windows:** Usa el script `START_SERVER.bat`.
+
+
+## 7. ¿Y ahora?
+
+Cuando veas que el servidor terminó de cargar, puedes usar el comando `help` en la consola para ver todos los comandos disponibles.
+
+¡Listo! Ya tienes tu servidor de Minecraft funcionando con Docker.
+
+## 📂 ¿Para qué sirve la carpeta `data`?
+
+Aquí se guardan todos los archivos importantes del servidor:
+
+- `server.properties`: Configuración principal del servidor.
+- Carpeta `world`: El mundo de Minecraft.
+
+---
+
+¿Dudas, sugerencias o quieres compartir tu experiencia? ¡Edita este archivo o abre un Issue!
