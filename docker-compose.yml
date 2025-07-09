@@ -10,7 +10,7 @@ services:
       MEMORY: "4G"
       TYPE: "FABRIC"
       VERSION: "1.20.1"
-      MOTD: "Bienvenido a mi servidor de Minecraft"
+      MOTD: "Bienvenido al servidor hecho por n1krov"
       DIFFICULTY: "hard"
       # ICON: "https://example.com/icon.png"
       MAX_PLAYERS: "20"
