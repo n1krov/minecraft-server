@@ -49,23 +49,16 @@ services:
       - ./data:/data
 ```
 
-### Explicación rápida de opciones principales:
-
-- **image**: Imagen de Docker que se usará.
-- **ports**: Expone el puerto 25565 (el de Minecraft) de tu máquina.
-- **environment**: Variables de entorno para configurar el servidor (RAM, versión, EULA, etc.)
-- **volumes**: Sincroniza la carpeta `data` para guardar el mundo y la configuración.
-
 
 >[!NOTE]
-> - `mc-server` es el nombre del servicio, puedes cambiarlo a lo que quieras.
+> - `minecraft-server` es el nombre del servicio, puedes cambiarlo a lo que quieras.
 > - `itzg/minecraft-server` es la imagen de minecraft que vamos a utilizar.
 > - `tty` y `stdin_open` son para mantener el contenedor abierto.
 > - `ports` es para exponer el puerto 25565 del contenedor al puerto 25565 del host. Como ven tiene 25565:25565, el primer numero es el puerto del host y el segundo es el puerto del contenedor.
 > - El segundo puerto es el puerto por defecto de minecraft, por lo que debemos dejarlo asi. El de la izquierda es el puerto del host, puedes cambiarlo si quieres.
 > - Pero como no vamos a abrir puertos esto es opcional.
 > - `environment` es para aceptar el EULA de minecraft.
-> - `volumes` es para montar un volumen en el contenedor.
+> - `volumes`  Sincroniza la carpeta `data` para guardar el mundo y la configuración.
 > 
 > - `MEMORY: "4G"` es para asignarle 4GB de memoria al servidor de minecraft. 
 > - Para especificar el tipo de servidor se utiliza `TYPE`
