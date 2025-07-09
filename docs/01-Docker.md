@@ -17,10 +17,8 @@ Esta imagen de itzg es muy popular y tiene muchas opciones de configuracion, pue
 2. Crea un archivo `docker-compose.yml` con el siguiente contenido:
 
 ```yaml
-version: '3.3'
-
 services:
-  mc-server:
+  minecraft-server:
     image: itzg/minecraft-server
     tty: true
     stdin_open: true
@@ -28,98 +26,52 @@ services:
       - "25565:25565"
     environment:
       EULA: "TRUE"
-    volumes:
-      - ./data:/data
-```
-
-`mc-server` es el nombre del servicio, puedes cambiarlo a lo que quieras.
-`itzg/minecraft-server` es la imagen de minecraft que vamos a utilizar.
-`tty` y `stdin_open` son para mantener el contenedor abierto.
-`ports` es para exponer el puerto 25565 del contenedor al puerto 25565 del host. Como ven tiene 25565:25565, el primer numero es el puerto del host y el segundo es el puerto del contenedor.
-El segundo puerto es el puerto por defecto de minecraft, por lo que debemos dejarlo asi. El de la izquierda es el puerto del host, puedes cambiarlo si quieres.
-Pero como no vamos a abrir puertos esto es opcional.
-`environment` es para aceptar el EULA de minecraft.
-`volumes` es para montar un volumen en el contenedor.
-
-
-- Por lo que el archivo de configuracion yaml se veria asi:
-
-```yaml
-version: "3.8"
-
-services:
-  minecraft-server:
-    image: itzg/minecraft-server
-    tty: true
-    stdin_open: true
-    environment:
-      EULA: "TRUE"
       MEMORY: "4G"
       TYPE: "FABRIC"
       VERSION: "1.20.1"
       MOTD: "Bienvenido a mi servidor de Minecraft"
       DIFFICULTY: "hard"
-      ICON: "https://example.com/icon.png"
+      # ICON: "https://example.com/icon.png"
       MAX_PLAYERS: "20"
-      ONLINE_MODE: "false
+      ONLINE_MODE: "false"
     volumes:
       - ./data:/data
 ```
-Nota que `MEMORY: "4G"` es para asignarle 4GB de memoria al servidor de minecraft.
-Para especificar el tipo de servidor se utiliza `TYPE`
-`VERSION` es para especificar la version del servidor de minecraft.
-`MOTD` es para especificar el mensaje que se muestra en la lista de servidores de minecraft.
-`DIFFICULTY` es para especificar la dificultad del servidor.
-`ICON` es para especificar el icono del servidor. Copia la direccion de imagen y pegalo en el campo.
-`MAX_PLAYERS` es para especificar el numero maximo de jugadores en el servidor.
-`ONLINE_MODE` es para especificar si el servidor esta en modo online o no. (Si sos no premium dejalo en false)
+
+>[!NOTE]
+> - `mc-server` es el nombre del servicio, puedes cambiarlo a lo que quieras.
+> - `itzg/minecraft-server` es la imagen de minecraft que vamos a utilizar.
+> - `tty` y `stdin_open` son para mantener el contenedor abierto.
+> - `ports` es para exponer el puerto 25565 del contenedor al puerto 25565 del host. Como ven tiene 25565:25565, el primer numero es el puerto del host y el segundo es el puerto del contenedor.
+> - El segundo puerto es el puerto por defecto de minecraft, por lo que debemos dejarlo asi. El de la izquierda es el puerto del host, puedes cambiarlo si quieres.
+> - Pero como no vamos a abrir puertos esto es opcional.
+> - `environment` es para aceptar el EULA de minecraft.
+> - `volumes` es para montar un volumen en el contenedor.
+> 
+> - `MEMORY: "4G"` es para asignarle 4GB de memoria al servidor de minecraft. 
+> - Para especificar el tipo de servidor se utiliza `TYPE`
+> - `VERSION` es para especificar la version del servidor de minecraft.
+> - `MOTD` es para especificar el mensaje que se muestra en la lista de servidores de minecraft.
+> - `DIFFICULTY` es para especificar la dificultad del servidor.
+> - `ICON` es para especificar el icono del servidor. Copia la direccion de imagen y pegalo en el campo.
+> - `MAX_PLAYERS` es para especificar el numero maximo de jugadores en el servidor.
+> - `ONLINE_MODE` es para especificar si el servidor esta en modo online o no. (Si sos no premium dejalo en false)
+
+- Si quieres conectarte de manera local debes agregar en el yaml `ports: - "25565:25565"` para exponer el puerto 25565 del contenedor al puerto 25565 del host.
 
 > Nota: Puedes ver todas las opciones de configuracion en la documentacion de la imagen de itzg.
-
-
-3. Creamos la carpeta `data` en el mismo directorio donde esta el archivo `docker-compose.yml`
-
-- Ahi se guardara la configuracion del servidor de minecraft. Estara el archivo `server.properties` y la carpeta `world` con el mundo del servidor.
-
-
-4. Ejecutamos el comando `docker-compose up -d` para crear el contenedor.
-
-- Como estoy en Linux dejo en el repositorio un script para inicializarlo en segundo plano, para attachearlo y poder detenerlo.
-- Si despues vere si tengo ganas de escirbir un equivalente en .bat para Windows.
-
-
-## Opcional - Conectarse de manera local
-Si quieres conectarte de manera local debes agregar en el yaml `ports: - "25565:25565"` para exponer el puerto 25565 del contenedor al puerto 25565 del host.
-
-Por lo que el archivo de configuracion yaml se veria asi:
-```yaml
-version: "3.8"
-
-services:
-  minecraft-server:
-    image: itzg/minecraft-server
-    tty: true
-    stdin_open: true
-    ports:
-      - "25565:25565"
-    environment:
-      EULA: "TRUE"
-      MEMORY: "4G"
-      TYPE: "FABRIC"
-      VERSION: "1.20.1"
-      MOTD: "Bienvenido a mi servidor de Minecraft"
-      DIFFICULTY: "hard"
-      ICON: "https://example.com/icon.png"
-      MAX_PLAYERS: "20"
-      ONLINE_MODE: "false
-    volumes:
-      - ./data:/data
-```
-
-
-
+> Usaremos este modelo de ejemplo en la raiz del repositorio, por lo que si quieres puedes copiarlo y pegarlo en tu directorio de minecraft-server.
 
 ## Probamos el servidor
+
+Ejecutamos el comando `docker-compose up -d` para crear el contenedor.
+
+- El docker-compose ya crea la carpeta `data` en la raiz del proyecto, por lo que no es necesario crearla manualmente.
+- Ahi se guardara la configuracion del servidor de minecraft. Estara el archivo `server.properties` y la carpeta `world` con el mundo del servidor.
+
+Como estoy en Linux dejo en el repositorio un script para inicializarlo en segundo plano, para attachearlo y poder detenerlo.
+- El script para linux es `init.sh`, que puedes ejecutar con `bash init.sh`.
+- Tambien esta el script `START_SERVER.bat` para Windows.
 
 - Ejecuta el comando `docker-compose up -d` para crear el contenedor.
 
